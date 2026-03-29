@@ -17,148 +17,233 @@ export default function CartPage() {
   };
 
   if (orderPlaced) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-        className="text-center max-w-md">
-        <p className="text-white/20 text-5xl mb-8">✓</p>
-        <h1 className="font-display text-5xl italic text-white mb-6">Order Confirmed</h1>
-        <p className="text-white/50 text-sm leading-relaxed mb-10">
-          Thank you. Your order has been placed and will be dispatched within 2–3 business days.
+        style={{ textAlign: 'center', maxWidth: '480px' }}>
+        <p style={{ fontSize: '3rem', color: 'rgba(255,255,255,0.15)', marginBottom: '32px' }}>✓</p>
+        <h1 style={{
+          fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+          fontStyle: 'italic', color: '#fff', marginBottom: '24px'
+        }}>Order Confirmed</h1>
+        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.88rem', lineHeight: '1.9', marginBottom: '48px' }}>
+          Thank you. Your order has been placed and will be dispatched within 2–3 business days. A confirmation will be sent to your email.
         </p>
-        <Link href="/shop"
-          className="inline-block border border-white/20 text-white text-xs tracking-[0.2em] uppercase px-8 py-4 hover:border-white/50 transition-colors">
-          Continue Shopping
-        </Link>
+        <Link href="/shop" className="btn-outline">Continue Shopping</Link>
       </motion.div>
     </div>
   );
 
   if (cart.length === 0) return (
-    <div className="min-h-screen flex items-center justify-center px-6">
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-        className="text-center">
-        <p className="font-display text-6xl italic text-white/10 mb-6">Empty</p>
-        <h1 className="font-display text-4xl italic text-white mb-4">Your cart is empty</h1>
-        <p className="text-white/40 text-sm mb-10">Nothing has been added yet.</p>
-        <Link href="/shop"
-          className="inline-block bg-white text-black text-xs tracking-[0.2em] uppercase px-10 py-4 hover:bg-white/90 transition-colors">
-          Browse Collection
-        </Link>
+        style={{ textAlign: 'center' }}>
+        <p style={{
+          fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 8vw, 6rem)',
+          fontStyle: 'italic', color: 'rgba(255,255,255,0.06)', marginBottom: '24px', lineHeight: 1
+        }}>Empty</p>
+        <h1 style={{
+          fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+          fontStyle: 'italic', color: '#fff', marginBottom: '16px'
+        }}>Your cart is empty</h1>
+        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.88rem', marginBottom: '48px' }}>
+          Nothing has been added yet.
+        </p>
+        <Link href="/shop" className="btn-primary">Browse Collection</Link>
       </motion.div>
     </div>
   );
 
   return (
-    <div className="min-h-screen pt-32 pb-24">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16">
-          <p className="text-white/30 text-[10px] tracking-[0.25em] uppercase mb-3">Your Selection</p>
-          <h1 className="font-display text-6xl italic text-white">Shopping Cart</h1>
+    <div style={{ minHeight: '100vh', paddingTop: '140px', paddingBottom: '100px' }}>
+      <div className="container">
+
+        {/* Header */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ marginBottom: '64px' }}>
+          <span className="section-eyebrow">Your Selection</span>
+          <h1 className="section-heading" style={{ fontStyle: 'italic', fontSize: 'clamp(3rem, 7vw, 5rem)' }}>
+            Shopping Cart
+          </h1>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '80px', alignItems: 'start' }}>
 
           {/* Cart Items */}
-          <div className="lg:col-span-3 space-y-0">
-            <div className="border-b border-white/8 pb-4 mb-6 hidden md:grid grid-cols-4 gap-4">
+          <div>
+            {/* Table header */}
+            <div style={{
+              display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr',
+              gap: '16px', paddingBottom: '16px',
+              borderBottom: '1px solid rgba(255,255,255,0.06)',
+              marginBottom: '8px',
+            }}>
               {['Product', 'Size / Color', 'Qty', 'Total'].map(h => (
-                <p key={h} className="text-white/25 text-[10px] tracking-[0.15em] uppercase">{h}</p>
+                <p key={h} style={{
+                  color: 'rgba(255,255,255,0.2)', fontSize: '0.62rem',
+                  letterSpacing: '0.18em', textTransform: 'uppercase'
+                }}>{h}</p>
               ))}
             </div>
 
             <AnimatePresence>
               {cart.map(item => (
-                <motion.div key={`${item.id}-${item.size}-${item.color}`}
-                  initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
-                  className="grid grid-cols-1 md:grid-cols-4 gap-4 py-8 border-b border-white/5 items-center">
-                  <div className="flex items-center gap-4">
-                    <img src={item.image} alt={item.name} className="w-20 h-24 object-cover shrink-0" />
+                <motion.div
+                  key={`${item.id}-${item.size}-${item.color}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20, height: 0 }}
+                  style={{
+                    display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr',
+                    gap: '16px', padding: '28px 0',
+                    borderBottom: '1px solid rgba(255,255,255,0.04)',
+                    alignItems: 'center',
+                  }}>
+
+                  {/* Product */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <img src={item.image} alt={item.name}
+                      style={{ width: '72px', height: '88px', objectFit: 'cover', flexShrink: 0 }} />
                     <div>
-                      <p className="text-white text-sm font-medium mb-1">{item.name}</p>
-                      <p className="text-white/40 text-xs">${item.price}</p>
+                      <p style={{ color: '#fff', fontSize: '0.88rem', marginBottom: '6px' }}>{item.name}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.78rem' }}>${item.price}</p>
+                      <button onClick={() => removeFromCart(item.id, item.size, item.color)}
+                        style={{
+                          background: 'none', border: 'none', cursor: 'pointer',
+                          color: 'rgba(255,255,255,0.2)', fontSize: '0.65rem',
+                          letterSpacing: '0.1em', textTransform: 'uppercase',
+                          padding: '4px 0', marginTop: '8px', transition: 'color 0.2s'
+                        }}
+                        onMouseEnter={e => e.target.style.color = 'rgba(255,255,255,0.6)'}
+                        onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.2)'}>
+                        Remove
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <p className="text-white/50 text-xs">{item.size} · {item.color}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
+
+                  {/* Size/Color */}
+                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
+                    {item.size} · {item.color}
+                  </p>
+
+                  {/* Qty */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <button onClick={() => updateQty(item.id, item.size, item.color, item.qty - 1)}
-                      className="w-7 h-7 border border-white/15 text-white/50 hover:border-white/40 hover:text-white text-sm transition-colors">
-                      −
-                    </button>
-                    <span className="text-white text-sm w-4 text-center">{item.qty}</span>
+                      style={{
+                        width: '28px', height: '28px', background: 'none',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
+                        fontSize: '1rem', transition: 'all 0.2s',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>−</button>
+                    <span style={{ color: '#fff', fontSize: '0.88rem', minWidth: '16px', textAlign: 'center' }}>
+                      {item.qty}
+                    </span>
                     <button onClick={() => updateQty(item.id, item.size, item.color, item.qty + 1)}
-                      className="w-7 h-7 border border-white/15 text-white/50 hover:border-white/40 hover:text-white text-sm transition-colors">
-                      +
-                    </button>
+                      style={{
+                        width: '28px', height: '28px', background: 'none',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
+                        fontSize: '1rem', transition: 'all 0.2s',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>+</button>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-white text-sm">${(item.price * item.qty).toFixed(2)}</p>
-                    <button onClick={() => removeFromCart(item.id, item.size, item.color)}
-                      className="text-white/20 hover:text-white/60 text-xs tracking-widest uppercase transition-colors">
-                      Remove
-                    </button>
-                  </div>
+
+                  {/* Total */}
+                  <p style={{ color: '#fff', fontSize: '0.88rem' }}>
+                    ${(item.price * item.qty).toFixed(2)}
+                  </p>
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
 
           {/* Order Summary + Form */}
-          <div className="lg:col-span-2">
-            <div className="border border-white/8 p-8 mb-8">
-              <h2 className="font-display text-2xl italic text-white mb-8">Order Summary</h2>
-              <div className="space-y-4 mb-8">
-                <div className="flex justify-between text-sm">
-                  <span className="text-white/40">Subtotal</span>
-                  <span className="text-white">${total.toFixed(2)}</span>
+          <div style={{ position: 'sticky', top: '120px' }}>
+
+            {/* Summary */}
+            <div style={{
+              border: '1px solid rgba(255,255,255,0.07)',
+              padding: '36px', marginBottom: '24px',
+            }}>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: '1.6rem',
+                fontStyle: 'italic', color: '#fff', marginBottom: '32px'
+              }}>Order Summary</h2>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.85rem' }}>Subtotal</span>
+                  <span style={{ color: '#fff', fontSize: '0.85rem' }}>${total.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-white/40">Shipping</span>
-                  <span className="text-white">{total >= 200 ? 'Free' : '$12.00'}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.85rem' }}>Shipping</span>
+                  <span style={{ color: '#fff', fontSize: '0.85rem' }}>
+                    {total >= 200 ? 'Free' : '$12.00'}
+                  </span>
                 </div>
-                <div className="border-t border-white/8 pt-4 flex justify-between">
-                  <span className="text-white font-medium">Total</span>
-                  <span className="text-white font-medium">
+                <div style={{
+                  borderTop: '1px solid rgba(255,255,255,0.07)',
+                  paddingTop: '20px',
+                  display: 'flex', justifyContent: 'space-between'
+                }}>
+                  <span style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 500 }}>Total</span>
+                  <span style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 500 }}>
                     ${(total >= 200 ? total : total + 12).toFixed(2)}
                   </span>
                 </div>
               </div>
+
               {total < 200 && (
-                <p className="text-white/30 text-xs">
+                <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem', lineHeight: 1.6 }}>
                   Add ${(200 - total).toFixed(0)} more for free shipping
                 </p>
               )}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <h3 className="font-display text-xl italic text-white mb-6">Delivery Details</h3>
-              {[
-                { key: 'name', label: 'Full Name', placeholder: 'Your name' },
-                { key: 'email', label: 'Email', placeholder: 'your@email.com' },
-                { key: 'address', label: 'Address', placeholder: 'Street, City, Postcode' },
-              ].map(field => (
-                <div key={field.key}>
-                  <label className="text-white/30 text-[10px] tracking-[0.15em] uppercase block mb-2">
-                    {field.label}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={field.placeholder}
-                    value={form[field.key]}
-                    onChange={e => setForm(prev => ({ ...prev, [field.key]: e.target.value }))}
-                    className="w-full bg-white/5 border border-white/10 text-white text-sm px-4 py-3 focus:outline-none focus:border-white/30 placeholder:text-white/20 transition-colors"
-                  />
-                </div>
-              ))}
-              <button type="submit"
-                className="w-full bg-white text-black text-xs tracking-[0.25em] uppercase py-5 mt-4 hover:bg-white/90 transition-colors">
+            {/* Checkout Form */}
+            <form onSubmit={handleSubmit}>
+              <h3 style={{
+                fontFamily: 'var(--font-display)', fontSize: '1.3rem',
+                fontStyle: 'italic', color: '#fff', marginBottom: '24px'
+              }}>Delivery Details</h3>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px' }}>
+                {[
+                  { key: 'name', label: 'Full Name', placeholder: 'Your name' },
+                  { key: 'email', label: 'Email', placeholder: 'your@email.com' },
+                  { key: 'address', label: 'Address', placeholder: 'Street, City, Postcode' },
+                ].map(field => (
+                  <div key={field.key}>
+                    <label style={{
+                      color: 'rgba(255,255,255,0.2)', fontSize: '0.6rem',
+                      letterSpacing: '0.18em', textTransform: 'uppercase',
+                      display: 'block', marginBottom: '8px'
+                    }}>{field.label}</label>
+                    <input
+                      type="text"
+                      placeholder={field.placeholder}
+                      value={form[field.key]}
+                      onChange={e => setForm(prev => ({ ...prev, [field.key]: e.target.value }))}
+                      className="form-input"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <button type="submit" className="btn-primary"
+                style={{ width: '100%', textAlign: 'center', padding: '18px' }}>
                 Place Order
               </button>
             </form>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .cart-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

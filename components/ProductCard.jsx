@@ -2,59 +2,120 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useWishlist } from './WishlistContext';
+import { useCart } from './CartContext';
+import Toast from './Toast';
 
 export default function ProductCard({ product, index = 0 }) {
   const [hovered, setHovered] = useState(false);
+  const [toast, setToast] = useState(false);
+  const { toggleWishlist, isWishlisted } = useWishlist();
+  const { addToCart } = useCart();
 
-  const tagColors = {
-    Bestseller: 'bg-white/10 text-white/70',
-    New: 'bg-white text-black',
-    Limited: 'bg-amber-900/40 text-amber-300',
+  const wishlisted = isWishlisted(product.id);
+
+  const tagClass = {
+    Bestseller: 'tag-bestseller',
+    New: 'tag-new',
+    Limited: 'tag-limited',
+  };
+
+  const handleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product);
+  };
+
+  const handleQuickAdd = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, product.sizes[0], product.colors[0]);
+    setToast(true);
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}>
-      <Link href={`/shop/${product.id}`} className="group block">
-        <div
-          className="relative overflow-hidden aspect-[3/4] bg-zinc-900 rounded-sm mb-4"
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}>
+        <Link
+          href={`/shop/${product.id}`}
+          className="product-card"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}>
-          <img
-            src={hovered ? product.hoverImage : product.image}
-            alt={product.name}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500" />
 
-          {product.tag && (
-            <span className={`absolute top-4 left-4 text-[10px] tracking-[0.12em] uppercase px-3 py-1 rounded-full ${tagColors[product.tag]}`}>
-              {product.tag}
-            </span>
-          )}
+          <div className="product-card-img-wrap">
+            <img
+              src={hovered ? product.hoverImage : product.image}
+              alt={product.name}
+            />
+            <div className="product-card-overlay" />
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
-            transition={{ duration: 0.25 }}
-            className="absolute bottom-4 left-4 right-4">
-            <div className="bg-white text-black text-xs tracking-[0.15em] uppercase text-center py-3 rounded-sm font-medium">
-              Quick View
-            </div>
-          </motion.div>
-        </div>
+            {/* Tag */}
+            {product.tag && (
+              <span className={tagClass[product.tag]}>{product.tag}</span>
+            )}
 
-        <div className="space-y-1">
-          <p className="text-white/40 text-[10px] tracking-[0.15em] uppercase">{product.category}</p>
-          <h3 className="font-display text-white text-lg italic group-hover:text-white/70 transition-colors duration-300">
-            {product.name}
-          </h3>
-          <p className="text-white/60 text-sm">${product.price}</p>
-        </div>
-      </Link>
-    </motion.div>
+            {/* Wishlist button */}
+<button
+  onClick={handleWishlist}
+  style={{
+    position: 'absolute',
+    top: '14px', right: '14px',
+    width: '34px', height: '34px',
+    borderRadius: '50%',
+    background: wishlisted
+      ? 'rgba(220, 50, 50, 0.85)'
+      : 'rgba(8,8,8,0.55)',
+    backdropFilter: 'blur(10px)',
+    border: wishlisted
+      ? '1px solid rgba(255,100,100,0.4)'
+      : '1px solid rgba(255,255,255,0.12)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: wishlisted ? '0.85rem' : '0.8rem',
+    color: wishlisted ? '#fff' : 'rgba(255,255,255,0.7)',
+    transition: 'all 0.25s ease',
+    opacity: hovered || wishlisted ? 1 : 0,
+    transform: hovered || wishlisted ? 'scale(1)' : 'scale(0.75)',
+    boxShadow: wishlisted ? '0 4px 16px rgba(200,50,50,0.35)' : 'none',
+  }}>
+  {wishlisted ? '♥' : '♡'}
+</button>
+
+            {/* Quick add */}
+            <button
+              onClick={handleQuickAdd}
+              className="product-card-quick">
+              Quick Add
+            </button>
+          </div>
+
+          <p className="product-card-cat">{product.category}</p>
+          <h3 className="product-card-name">{product.name}</h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p className="product-card-price">${product.price}</p>
+            {wishlisted && (
+              <p style={{
+                fontSize: '0.6rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.3)',
+              }}>Saved</p>
+            )}
+          </div>
+        </Link>
+      </motion.div>
+
+      <Toast
+        message={`${product.name} added to cart`}
+        show={toast}
+        onClose={() => setToast(false)}
+      />
+    </>
   );
 }

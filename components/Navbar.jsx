@@ -17,59 +17,100 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-7'
-      }`}>
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="font-display text-xl text-white tracking-widest uppercase">
-            LuxeShop
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        <Link href="/" style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.1rem',
+          color: '#fff',
+          letterSpacing: '0.25em',
+          textTransform: 'uppercase',
+          fontWeight: 600,
+        }}>
+          LuxeShop
+        </Link>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }} className="nav-links-desktop">
+          {[['/', 'Home'], ['/shop', 'Shop'], ['/shop?cat=Outerwear', 'Outerwear'], ['/shop?cat=Dresses', 'Dresses']].map(([href, label]) => (
+            <Link key={href} href={href} style={{
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: '0.68rem',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              transition: 'color 0.3s',
+            }}
+              onMouseEnter={e => e.target.style.color = '#fff'}
+              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.5)'}>
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <Link href="/cart" style={{ position: 'relative' }}>
+            <svg width="20" height="20" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+            </svg>
+            {itemCount > 0 && (
+              <motion.span
+                initial={{ scale: 0 }} animate={{ scale: 1 }}
+                style={{
+                  position: 'absolute',
+                  top: '-8px', right: '-8px',
+                  width: '16px', height: '16px',
+                  background: '#fff', color: '#080808',
+                  fontSize: '9px', fontWeight: 700,
+                  borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                {itemCount}
+              </motion.span>
+            )}
           </Link>
 
-          <div className="hidden md:flex items-center gap-10">
-            {[['/', 'Home'], ['/shop', 'Shop'], ['/shop?cat=Outerwear', 'Outerwear'], ['/shop?cat=Dresses', 'Dresses']].map(([href, label]) => (
-              <Link key={href} href={href}
-                className="text-white/60 hover:text-white text-xs tracking-[0.15em] uppercase transition-colors duration-300">
-                {label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-6">
-            <Link href="/cart" className="relative group">
-              <svg className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
-              </svg>
-              {itemCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }} animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 w-4 h-4 bg-white text-black text-[10px] font-semibold rounded-full flex items-center justify-center">
-                  {itemCount}
-                </motion.span>
-              )}
-            </Link>
-            <button className="md:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"} />
-              </svg>
-            </button>
-          </div>
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#fff', display: 'none' }}
+            className="hamburger-btn">
+            <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round"
+                d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"} />
+            </svg>
+          </button>
         </div>
       </nav>
 
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-            className="fixed inset-0 z-40 bg-black flex flex-col items-center justify-center gap-10 md:hidden">
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 40,
+              background: '#080808',
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center',
+              gap: '40px',
+            }}>
             {[['/', 'Home'], ['/shop', 'Shop'], ['/cart', 'Cart']].map(([href, label]) => (
               <Link key={href} href={href} onClick={() => setMenuOpen(false)}
-                className="font-display text-4xl text-white/80 hover:text-white italic">
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '3rem',
+                  color: 'rgba(255,255,255,0.8)',
+                  fontStyle: 'italic',
+                }}>
                 {label}
               </Link>
             ))}
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-links-desktop { display: none !important; }
+          .hamburger-btn { display: block !important; }
+        }
+      `}</style>
     </>
   );
 }
