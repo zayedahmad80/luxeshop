@@ -67,7 +67,7 @@ body::after {
   background: rgba(8,8,8,0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  
   padding: 16px 48px;
 }
 @media (max-width: 768px) {
