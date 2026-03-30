@@ -5,6 +5,7 @@ import { WishlistProvider } from '../components/WishlistContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import CursorTrail from '../components/CursorTrail';
+import LoadingScreen from '../components/LoadingScreen';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
       <body style={{ background: '#080808', color: '#fff', overflowX: 'hidden' }}>
         <CartProvider>
           <WishlistProvider>
+            <LoadingScreen />
             <CursorTrail />
             <Navbar />
             <main>{children}</main>

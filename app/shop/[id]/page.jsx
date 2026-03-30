@@ -6,6 +6,8 @@ import { products } from '../../../data/products';
 import { useCart } from '../../../components/CartContext';
 import ProductCard from '../../../components/ProductCard';
 import Link from 'next/link';
+import SizeGuide from '../../../components/SizeGuide';
+import ImageZoom from '../../../components/ImageZoom';
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -16,6 +18,7 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [added, setAdded] = useState(false);
+  const [sizeGuide, setSizeGuide] = useState(false);
 
   if (!product) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -71,12 +74,11 @@ export default function ProductPage() {
 
           {/* Images */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9 }}>
-            <div style={{
-              aspectRatio: '3/4', overflow: 'hidden',
-              background: '#111', marginBottom: '12px'
-            }}>
-              <img src={product.gallery[activeImg]} alt={product.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'all 0.6s ease' }} />
+              <div style={{
+               aspectRatio: '3/4', overflow: 'hidden',
+               background: '#111', marginBottom: '12px'
+               }}>
+              <ImageZoom src={product.gallery[activeImg]} alt={product.name} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
               {product.gallery.map((img, i) => (
@@ -151,7 +153,16 @@ export default function ProductPage() {
                 color: 'rgba(255,255,255,0.25)', fontSize: '0.62rem',
                 letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '16px'
               }}>
-                Size {selectedSize && <span style={{ color: 'rgba(255,255,255,0.5)', marginLeft: '8px' }}>— {selectedSize}</span>}
+                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span>Size {selectedSize && <span style={{ color: 'rgba(255,255,255,0.5)', marginLeft: '8px' }}>— {selectedSize}</span>}</span>
+          <button onClick={() => setSizeGuide(true)} style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          color: 'rgba(255,255,255,0.35)', fontSize: '0.62rem',
+          letterSpacing: '0.12em', textTransform: 'uppercase',
+          textDecoration: 'underline', textUnderlineOffset: '3px',
+          transition: 'color 0.2s',
+          }}>Size Guide</button>
+       </span>
               </p>
               <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                 {product.sizes.map(size => (
@@ -243,6 +254,7 @@ export default function ProductPage() {
           .product-main-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
         }
       `}</style>
+      <SizeGuide show={sizeGuide} onClose={() => setSizeGuide(false)} />
     </div>
   );
 }

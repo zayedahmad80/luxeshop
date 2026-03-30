@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { products, categories } from '../../data/products';
 import ProductCard from '../../components/ProductCard';
 
+
 function ShopContent() {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState('All');

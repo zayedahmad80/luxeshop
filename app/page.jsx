@@ -20,7 +20,7 @@ export default function Home() {
       {/* ===== HERO ===== */}
       <section className="hero-section">
         <img
-          src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1800&q=90"
+          src="https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?q=80&w=669&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Hero" className="hero-bg-img"
         />
         <div className="hero-overlay" />
