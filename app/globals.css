@@ -589,12 +589,3 @@ input[type="range"] {
 aside p[style] {
   color: rgba(255,255,255,0.4) !important;
 }
-
-/* ── Full white text globally ── */
-/*--p, span, h1, h2, h3, h4, h5, h6, a, li, label, button, input, select, textarea {
-  color: #fff;
-}
-
-input::placeholder, textarea::placeholder {
-  color: rgba(255,255,255,0.45);
-}*/
