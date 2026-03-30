@@ -424,20 +424,22 @@ body::after {
 }
 
 /* ── Form inputs ── */
-.form-input {
+ .form-input {
   width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
   color: #fff;
   font-size: 0.875rem;
   padding: 14px 18px;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
   font-family: var(--font-body);
 }
-.form-input::placeholder { color: rgba(255,255,255,0.18); }
-.form-input:focus { border-color: rgba(255,255,255,0.25); }
-
+.form-input::placeholder { color: rgba(255,255,255,0.35); }
+.form-input:focus {
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.09);
+}
 /* ── Footer ── */
 .footer-grid {
   display: grid;
@@ -552,4 +554,47 @@ select {
   .hero-title {
     font-size: clamp(2.8rem, 12vw, 4rem) !important;
   }
+}
+
+/* ── Sidebar & form labels brighter ── */
+.section-eyebrow {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+/* Shop sidebar text */
+aside button {
+  color: rgba(255,255,255,0.55) !important;
+}
+aside button:hover {
+  color: #fff !important;
+}
+
+/* Form labels */
+label {
+  color: rgba(255,255,255,0.45) !important;
+}
+
+/* Select dropdown */
+select.form-input {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* Range slider */
+input[type="range"] {
+  accent-color: #fff;
+  opacity: 0.8;
+}
+
+/* Sidebar headings */
+aside p[style] {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+/* ── Full white text globally ── */
+p, span, h1, h2, h3, h4, h5, h6, a, li, label, button, input, select, textarea {
+  color: #fff;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255,255,255,0.45);
 }
